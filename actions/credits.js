@@ -10,6 +10,7 @@ const PLAN_CREDITS = {
   free_user: 0, // Basic plan: 2 credits
   standard: 10, // Standard plan: 10 credits per month
   premium: 24, // Premium plan: 24 credits per month
+  mfine_one_membership:48, // Mfine One Membership: 48 credits per month
 };
 
 // Each appointment costs 2 credits
@@ -37,11 +38,15 @@ export async function checkAndAllocateCredits(user) {
     const hasBasic = has({ plan: "free_user" });
     const hasStandard = has({ plan: "standard" });
     const hasPremium = has({ plan: "premium" });
+    const hasMfineOneMembership = has({ plan: "mfine_one_membership" });
 
     let currentPlan = null;
     let creditsToAllocate = 0;
 
-    if (hasPremium) {
+    if (hasMfineOneMembership) {
+      currentPlan = "mfine_one_membership";
+      creditsToAllocate = PLAN_CREDITS.mfine_one_membership;
+    } else if (hasPremium) {
       currentPlan = "premium";
       creditsToAllocate = PLAN_CREDITS.premium;
     } else if (hasStandard) {
